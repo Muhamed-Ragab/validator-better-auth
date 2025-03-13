@@ -1,3 +1,4 @@
 bun lint-staged
 bun run test
 bun run build
+bun changeset version
