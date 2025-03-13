@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 1.1.0
+
+### Minor Changes
+
+- change building from tsup to tsc
+
 ## 1.0.0
 
 ### Major Changes
