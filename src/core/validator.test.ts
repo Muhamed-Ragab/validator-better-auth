@@ -1,5 +1,5 @@
 import { betterAuth } from "better-auth";
-import * as v from "valibot"; // 1.24 kB
+import * as v from "valibot";
 import { describe, it } from "vitest";
 import * as y from "yup";
 import { z } from "zod";

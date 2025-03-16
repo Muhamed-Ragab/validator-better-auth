@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 2.0.1
+
+### Patch Changes
+
+- Update README file
+
 ## 2.0.0
 
 ### Major Changes
