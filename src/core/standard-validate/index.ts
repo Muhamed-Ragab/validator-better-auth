@@ -1,5 +1,5 @@
 import type { StandardSchemaV1 } from "better-auth";
-import * as yup from "yup";
+import { Schema, ValidationError } from "yup";
 
 import type {
   StandardValidate,
@@ -8,7 +8,7 @@ import type {
 
 export const standardValidate: StandardValidate = async (schema, input) => {
   const mappedSchema: StandardSchemaV1 =
-    schema instanceof yup.Schema ? standardizeYup(schema) : schema;
+    schema instanceof Schema ? standardizeYup(schema) : schema;
 
   const result = await mappedSchema["~standard"].validate(input);
 
@@ -19,10 +19,10 @@ export const standardValidate: StandardValidate = async (schema, input) => {
   return result.value;
 };
 
-function standardizeYup<Schema extends yup.Schema>(
-  yupSchema: Schema,
+function standardizeYup<S extends Schema>(
+  yupSchema: S,
   vendor = "validator-better-auth",
-): StandardSchemaV1<YupStandardSchema<Schema>> {
+): StandardSchemaV1<YupStandardSchema<S>> {
   return {
     "~standard": {
       version: 1,
@@ -33,13 +33,13 @@ function standardizeYup<Schema extends yup.Schema>(
 
           return { value: validatedValue };
         } catch (err) {
-          if (!(err instanceof yup.ValidationError)) {
+          if (!(err instanceof ValidationError)) {
             throw err;
           }
 
           const issues =
             err.inner && err.inner.length > 0
-              ? err.inner.map((issue: yup.ValidationError) => ({
+              ? err.inner.map((issue: ValidationError) => ({
                   message: issue.message,
                   path: issue.path != null ? [issue.path] : undefined,
                 }))
