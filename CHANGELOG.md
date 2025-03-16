@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 2.0.0
+
+### Major Changes
+
+- Add options for better config, make it support all schemas, create standarizedFn for handling yup validation, add test for zod, valibot,yup
+
 ## 1.1.0
 
 ### Minor Changes

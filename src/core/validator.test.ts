@@ -1,6 +1,9 @@
 import { betterAuth } from "better-auth";
-import { describe, it } from "bun:test";
+import * as v from "valibot"; // 1.24 kB
+import { describe, it } from "vitest";
+import * as y from "yup";
 import { z } from "zod";
+
 import { validator } from "./validator";
 
 describe("validator", () => {
@@ -12,7 +15,49 @@ describe("validator", () => {
     });
 
     betterAuth({
-      plugins: [validator([{ path: "/sign-up/email", schema: signupSchema }])],
+      plugins: [
+        validator({
+          middlewares: [
+            { path: "/sign-up/email", schemas: { body: signupSchema } },
+          ],
+        }),
+      ],
+    });
+  });
+
+  it("initializes without errors with yup", () => {
+    const signupSchema = y.object().shape({
+      name: y.string().required(),
+      email: y.string().email().required(),
+      password: y.string().min(12).required(),
+    });
+
+    betterAuth({
+      plugins: [
+        validator({
+          middlewares: [
+            { path: "/sign-up/email", schemas: { body: signupSchema } },
+          ],
+        }),
+      ],
+    });
+  });
+
+  it("initializes without errors with valibot", () => {
+    const signupSchema = v.object({
+      name: v.string(),
+      email: v.pipe(v.string(), v.email()),
+      password: v.pipe(v.string(), v.minLength(12)),
+    });
+
+    betterAuth({
+      plugins: [
+        validator({
+          middlewares: [
+            { path: "/sign-up/email", schemas: { body: signupSchema } },
+          ],
+        }),
+      ],
     });
   });
 });

@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": "Mohamed Ragab",
   "license": "MIT",
   "description": "A better authentication validator",
@@ -27,7 +27,8 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "bun test",
+    "test": "vitest",
+    "start": "bun ./src/server/index.ts",
     "prepare": "husky",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -57,9 +58,20 @@
     "prettier-plugin-organize-imports": "^4.1.0",
     "tsup": "^8.4.0",
     "typescript-eslint": "^8.26.1",
+    "valibot": "1.0.0-rc.4",
+    "vitest": "^3.0.8",
+    "yup": "^1.6.1",
     "zod": "^3.24.2"
   },
   "peerDependencies": {
     "typescript": "^5.8.2"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

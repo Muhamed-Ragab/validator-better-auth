@@ -1,43 +1,43 @@
+import type { BetterAuthPlugin, ZodError, ZodIssue } from "better-auth";
 import { APIError } from "better-auth/api";
-import type { BetterAuthPlugin } from "better-auth/types";
-import type { ValidatorConfig, ValidatorOptions } from "./validator.type";
+import { createAuthMiddleware } from "better-auth/plugins";
 
-export const validator = (
-  configs: ValidatorConfig[],
-  { customError }: ValidatorOptions = {},
-): BetterAuthPlugin => {
-  return {
-    id: "validator-better-auth",
-    hooks: {
-      before: configs.map(({ path, schema }) => ({
-        matcher(ctx) {
-          return ctx.path.startsWith(path);
-        },
-        async handler(ctx) {
-          const { success, error, data } = schema.safeParse(ctx.body);
+import { standardValidate } from "./standard-validate";
+import type { ValidatorConfig } from "./validator.types";
 
-          if (!success) {
-            const errors = error.issues.map((issue) => ({
-              field: issue.path.join("."),
-              message: issue.message,
-              code: issue.code,
-            }));
+export const validator = ({ middlewares }: ValidatorConfig) =>
+  ({
+    id: "validator",
+    middlewares: middlewares.map(({ path, schemas, handler }) => ({
+      path,
+      middleware: createAuthMiddleware(async (ctx) => {
+        try {
+          const { body, query, params } = ctx;
 
-            if (customError) {
-              console.log("Custom error handler called");
+          await Promise.all([
+            schemas.body && standardValidate(schemas.body, body),
+            schemas.query && standardValidate(schemas.query, query),
+            schemas.params && standardValidate(schemas.params, params),
+          ]);
 
-              throw customError(error);
-            }
-
-            throw new APIError("BAD_REQUEST", {
-              message: "Invalid request body",
-              details: errors,
-            });
+          if (handler) {
+            return handler(ctx);
           }
+        } catch (e: unknown) {
+          const error =
+            e instanceof Error
+              ? (JSON.parse(e.message) as ZodError["issues"])
+              : [];
 
-          ctx.body = data;
-        },
-      })),
-    },
-  };
-};
+          throw new APIError("BAD_REQUEST", {
+            message: error[0]?.message,
+            errors: error.map((issue: ZodIssue) => ({
+              message: issue.message,
+              path: issue.path.join("."),
+              code: issue.code,
+            })),
+          });
+        }
+      }),
+    })),
+  }) as BetterAuthPlugin;
