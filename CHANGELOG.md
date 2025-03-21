@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 2.1.1
+
+### Patch Changes
+
+- Rename types
+
 ## 2.1.0
 
 ### Minor Changes
