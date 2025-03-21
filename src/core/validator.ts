@@ -3,9 +3,9 @@ import { APIError } from "better-auth/api";
 import { createAuthMiddleware } from "better-auth/plugins";
 
 import { standardValidate } from "./standard-validate";
-import type { ValidatorConfig } from "./validator.types";
+import type { ValidatorOptions } from "./validator.types";
 
-export const validator = ({ middlewares }: ValidatorConfig) =>
+export const validator = ({ middlewares }: ValidatorOptions) =>
   ({
     id: "validator",
     middlewares: middlewares.map(({ path, schemas, handler }) => ({

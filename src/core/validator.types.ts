@@ -5,7 +5,7 @@ export type MiddlewareHandlerContext = Parameters<
   Parameters<typeof createAuthMiddleware>[0]
 >[0];
 
-export type MiddlewareConfig = {
+export type MiddlewareOptions = {
   /**
    * @description Path to apply middleware
    * @property path string
@@ -30,6 +30,6 @@ export type MiddlewareConfig = {
   handler?: (ctx: MiddlewareHandlerContext) => void;
 };
 
-export type ValidatorConfig = {
-  middlewares: MiddlewareConfig[];
+export type ValidatorOptions = {
+  middlewares: MiddlewareOptions[];
 };
