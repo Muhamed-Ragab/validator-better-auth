@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 2.2.1
+
+### Patch Changes
+
+- fix throwing error in standardValidator fn
+
 ## 2.2.0
 
 ### Minor Changes

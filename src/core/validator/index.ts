@@ -1,5 +1,5 @@
 import { validate } from "@typeschema/main";
-import type { BetterAuthPlugin, ZodError, ZodIssue } from "better-auth";
+import { type BetterAuthPlugin } from "better-auth";
 import { APIError } from "better-auth/api";
 import { createAuthMiddleware } from "better-auth/plugins";
 
@@ -9,7 +9,14 @@ const standardValidate = async <T>(schema: any | never, data: T) => {
   const result = await validate(schema as never, data);
 
   if (!result.success) {
-    throw new Error(JSON.stringify(result.issues));
+    throw new APIError("BAD_REQUEST", {
+      message: result.issues[0]?.message,
+      errors: result.issues.map(({ message, path }) => ({
+        message,
+        path,
+        code: "BAD_REQUEST",
+      })),
+    });
   }
 };
 
@@ -19,32 +26,16 @@ export const validator = ({ middlewares }: ValidatorOptions) =>
     middlewares: middlewares.map(({ path, schemas, handler }) => ({
       path,
       middleware: createAuthMiddleware(async (ctx) => {
-        try {
-          const { body, query, params } = ctx;
+        const { body, query, params } = ctx;
 
-          await Promise.all([
-            schemas.body && standardValidate(schemas.body, body),
-            schemas.query && standardValidate(schemas.query, query),
-            schemas.params && standardValidate(schemas.params, params),
-          ]);
+        await Promise.all([
+          schemas.body && standardValidate(schemas.body, body),
+          schemas.query && standardValidate(schemas.query, query),
+          schemas.params && standardValidate(schemas.params, params),
+        ]);
 
-          if (handler) {
-            return handler(ctx);
-          }
-        } catch (e: unknown) {
-          const error =
-            e instanceof Error
-              ? (JSON.parse(e.message) as ZodError["issues"])
-              : [];
-
-          throw new APIError("BAD_REQUEST", {
-            message: error[0]?.message,
-            errors: error.map((issue: ZodIssue) => ({
-              message: issue.message,
-              path: issue.path.join("."),
-              code: issue.code,
-            })),
-          });
+        if (handler) {
+          return handler(ctx);
         }
       }),
     })),
