@@ -1,4 +1,4 @@
 bun lint-staged
-bun run test --watch=false
+bun test
 bun run build
 bun changeset version

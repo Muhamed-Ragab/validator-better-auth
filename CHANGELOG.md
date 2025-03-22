@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 2.2.0
+
+### Minor Changes
+
+- use @typeschema/main for handling schema validation
+
 ## 2.1.1
 
 ### Patch Changes

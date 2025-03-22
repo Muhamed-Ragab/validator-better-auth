@@ -1,10 +1,10 @@
 import { betterAuth } from "better-auth";
+import { describe, it } from "bun:test";
 import * as v from "valibot";
-import { describe, it } from "vitest";
 import * as y from "yup";
 import { z } from "zod";
 
-import { validator } from "./validator";
+import { validator } from "../validator";
 
 describe("validator", () => {
   it("initializes without errors with zod", () => {

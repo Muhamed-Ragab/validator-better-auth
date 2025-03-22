@@ -1,5 +1,4 @@
 import type { createAuthMiddleware } from "better-auth/plugins";
-import type { StandardSchema } from "./standard-validate/standard-validate.types";
 
 export type MiddlewareHandlerContext = Parameters<
   Parameters<typeof createAuthMiddleware>[0]
@@ -13,14 +12,14 @@ export type MiddlewareOptions = {
   path: string;
   /**
    * @description Schemas to validate
-   * @property body ZodType
-   * @property query ZodType
-   * @property params ZodType
+   * @property body Schema
+   * @property query Schema
+   * @property params Schema
    */
   schemas: {
-    body?: StandardSchema;
-    query?: StandardSchema;
-    params?: StandardSchema;
+    body?: any | never;
+    query?: any | never;
+    params?: any | never;
   };
   /**
    * @description Optional handler to run after validation

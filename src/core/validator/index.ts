@@ -1,9 +1,17 @@
+import { validate } from "@typeschema/main";
 import type { BetterAuthPlugin, ZodError, ZodIssue } from "better-auth";
 import { APIError } from "better-auth/api";
 import { createAuthMiddleware } from "better-auth/plugins";
 
-import { standardValidate } from "./standard-validate";
-import type { ValidatorOptions } from "./validator.types";
+import type { ValidatorOptions } from "./types";
+
+const standardValidate = async <T>(schema: any | never, data: T) => {
+  const result = await validate(schema as never, data);
+
+  if (!result.success) {
+    throw new Error(JSON.stringify(result.issues));
+  }
+};
 
 export const validator = ({ middlewares }: ValidatorOptions) =>
   ({
