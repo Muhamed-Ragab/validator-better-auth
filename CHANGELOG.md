@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 2.2.2
+
+### Patch Changes
+
+- handle unknown errors
+
 ## 2.2.1
 
 ### Patch Changes

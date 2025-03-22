@@ -60,4 +60,18 @@ describe("validator", () => {
       ],
     });
   });
+
+  it("returns an error with zod", async () => {
+    const signupSchema = z.object({
+      name: z.string(),
+      email: z.string().email(),
+      password: z.string().min(12),
+    });
+
+    validator({
+      middlewares: [
+        { path: "/sign-up/email", schemas: { body: signupSchema } },
+      ],
+    });
+  });
 });

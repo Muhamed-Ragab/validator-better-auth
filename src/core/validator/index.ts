@@ -26,16 +26,24 @@ export const validator = ({ middlewares }: ValidatorOptions) =>
     middlewares: middlewares.map(({ path, schemas, handler }) => ({
       path,
       middleware: createAuthMiddleware(async (ctx) => {
-        const { body, query, params } = ctx;
+        try {
+          const { body, query, params } = ctx;
 
-        await Promise.all([
-          schemas.body && standardValidate(schemas.body, body),
-          schemas.query && standardValidate(schemas.query, query),
-          schemas.params && standardValidate(schemas.params, params),
-        ]);
+          await Promise.all([
+            schemas.body && standardValidate(schemas.body, body),
+            schemas.query && standardValidate(schemas.query, query),
+            schemas.params && standardValidate(schemas.params, params),
+          ]);
 
-        if (handler) {
-          return handler(ctx);
+          if (handler) {
+            return handler(ctx);
+          }
+        } catch (error) {
+          if (error instanceof APIError) {
+            throw error;
+          }
+
+          throw new APIError("BAD_REQUEST", { error: JSON.stringify(error) });
         }
       }),
     })),
