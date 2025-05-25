@@ -11,10 +11,8 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@changesets/cli": "^2.28.1",
-		"@eslint/js": "^9.22.0",
 		"@types/bun": "latest",
 		"better-auth": "^1.2.3",
-		"eslint": "^9.22.0",
 		"globals": "^16.0.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.5.0",
@@ -48,8 +46,5 @@
 		"check": "bun run biome check --fix"
 	},
 	"type": "module",
-	"types": "dist/index.d.ts",
-	"dependencies": {
-		"@typeschema/main": "^0.14.1"
-	}
+	"types": "dist/index.d.ts"
 }
