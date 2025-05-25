@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 2.2.4
+
+### Patch Changes
+
+- update package.json to add yup as a dependency and remove tsup
+
 ## 2.2.3
 
 ### Patch Changes
