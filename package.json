@@ -1,6 +1,6 @@
 {
 	"name": "validator-better-auth",
-	"version": "2.2.2",
+	"version": "2.2.3",
 	"author": "Mohamed Ragab",
 	"repository": {
 		"type": "git",
@@ -31,12 +31,21 @@
 		"url": "https://github.com/Muhamed-Ragab/validator-better-auth/issues"
 	},
 	"description": "A better authentication validator",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"homepage": "https://github.com/Muhamed-Ragab/validator-better-auth",
-	"keywords": ["authentication", "validator", "auth", "better-auth"],
+	"keywords": [
+		"authentication",
+		"validator",
+		"auth",
+		"better-auth"
+	],
 	"license": "MIT",
 	"lint-staged": {
-		"*.{js,mjs,cjs,ts}": ["biome check --fix --unsafe"]
+		"*.{js,mjs,cjs,ts}": [
+			"biome check --fix --unsafe"
+		]
 	},
 	"scripts": {
 		"build": "tsc -p tsconfig.json",

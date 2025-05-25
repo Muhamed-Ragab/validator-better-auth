@@ -1,5 +1,11 @@
 # validator-better-auth
 
+## 2.2.3
+
+### Patch Changes
+
+- Use standard-schema for validation, and use biome instead of (eslint, prettier).
+
 ## 2.2.2
 
 ### Patch Changes
