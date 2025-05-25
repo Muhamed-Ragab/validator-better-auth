@@ -1,4 +1,5 @@
 import type { createAuthMiddleware } from "better-auth/plugins";
+import type { StandardSchema } from "../standard-validate/types";
 
 export type MiddlewareHandlerContext = Parameters<
   Parameters<typeof createAuthMiddleware>[0]
@@ -17,9 +18,9 @@ export type MiddlewareOptions = {
    * @property params Schema
    */
   schemas: {
-    body?: any | never;
-    query?: any | never;
-    params?: any | never;
+    body?: StandardSchema;
+    query?: StandardSchema;
+    params?: StandardSchema;
   };
   /**
    * @description Optional handler to run after validation

@@ -1,24 +1,9 @@
-import { validate } from "@typeschema/main";
-import { type BetterAuthPlugin } from "better-auth";
+import type { BetterAuthPlugin } from "better-auth";
 import { APIError } from "better-auth/api";
 import { createAuthMiddleware } from "better-auth/plugins";
 
+import { standardValidate } from "../standard-validate";
 import type { ValidatorOptions } from "./types";
-
-const standardValidate = async <T>(schema: any | never, data: T) => {
-  const result = await validate(schema as never, data);
-
-  if (!result.success) {
-    throw new APIError("BAD_REQUEST", {
-      message: result.issues[0]?.message,
-      errors: result.issues.map(({ message, path }) => ({
-        message,
-        path,
-        code: "BAD_REQUEST",
-      })),
-    });
-  }
-};
 
 export const validator = ({ middlewares }: ValidatorOptions) =>
   ({
